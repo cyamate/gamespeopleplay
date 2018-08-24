@@ -1,0 +1,48 @@
+<br>
+
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>ID:</strong>
+  <%= @log.id %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @log.date %>
+</p>
+
+<p>
+  <strong>Pcount:</strong>
+  <%= @log.pcount %>
+</p>
+
+<p>
+  <strong>Game:</strong>
+  <%= @log.game.name %>
+</p>
+
+<p>
+  <strong>Expansion:</strong>
+  <%= @log.expansion.name if @log.expansion %>
+</p>
+
+  <strong>Players:</strong>
+<ul>
+	<% for player_score in @log.player_scores %>
+		<li class="list-unstyled"><%= player_score.player.name %>: <%= player_score.score %></li>
+	<% end %>
+</ul>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @log.comment %>
+</p>
+
+<%= link_to 'Add', new_log_path(@log) %> |
+<%= link_to 'Edit', edit_log_path(@log) %> |
+<%= link_to 'Back to Logs', logs_path %>
+
+</div>

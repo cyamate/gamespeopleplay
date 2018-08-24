@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  pcount: 1
+  year: 1
+  designer_id: 1
+  publisher_id: 1
+  designer: one
+  publisher: one
+
+two:
+  name: MyString
+  pcount: 1
+  year: 1
+  designer_id: 1
+  publisher_id: 1
+  designer: two
+  publisher: two

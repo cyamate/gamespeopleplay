@@ -1,0 +1,81 @@
+<%= form_with(model: log, local: true) do |form| %>
+  <% if log.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger" role="alert">
+      <h4><%= pluralize(log.errors.count, "error") %> prohibited this log from being saved:</h4>
+
+      <ul>
+      <% log.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="form-row">
+
+  <div class="control-group col-md-4">
+    <%= form.label :date %>
+    <div class="form-group">
+      <%= form.date_select :date %>
+    </div>
+  </div>
+
+  <div class="control-group col-md-4">
+    <%= form.label :pcount %>
+    <div class="form-group">
+      <%= form.number_field :pcount, class: "form-control" %>
+    </div>
+  </div>
+
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <%= form.label :game_id %>
+    <div class="form-group">
+      <%= form.select :game_id, (Game.all.collect {|g| [ g.name, g.id ]}).sort %>
+    </div>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <%= form.label :expansion_id %>
+    <div class="form-group">
+      <%= form.select :expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, :include_blank => true %>
+    </div>
+  </div>
+</div>
+
+  <%= form.fields_for :player_scores do |builder| %>
+  <div class="form-row">
+      <div class="control-group col-md-4">
+        <%= builder.label :player_id %>
+        <div class="form-group">
+          <%= builder.select :player_id, (Player.all.collect {|p| [ p.name, p.id ]}).sort, :include_blank => true %>
+        </div>
+      </div>
+      <div class="control-group col-md-4">
+        <%= builder.label :score %>
+        <div class="form-group">
+          <%= builder.number_field :score, class: "form-control" %>
+        </div>
+      </div>
+  </div>
+  <% end %>
+
+  <div class="form-row">
+  <div class="form-group col-md-8">
+    <%= form.label :comment, 'Comments' %>
+    <div class="form-group">
+      <%= form.text_field :comment, class: "form-control" %>
+    </div>
+  </div>
+</div>
+
+  <div class="form-group">
+   <%= button_tag(type: 'submit', class: "btn btn-dark") do %>Submit<% end %>
+  </div>
+
+<% end %>
+

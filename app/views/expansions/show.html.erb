@@ -1,0 +1,40 @@
+<br>
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @expansion.name %>
+</p>
+
+<p>
+  <strong>Base Game:</strong>
+  <%= @expansion.game.name %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @expansion.year %>
+</p>
+
+<p>
+  <strong>Publisher:</strong>
+  <%= @expansion.publisher.name %>
+</p>
+
+<p>
+  <strong>Designer:</strong>
+  <%= @expansion.designer.name %>
+</p>
+
+<p>
+  <strong>Player count:</strong>
+  <%= @expansion.pcount %>
+</p>
+
+<%= link_to 'Add', new_expansion_path(@expansion) %> |
+<%= link_to 'Edit', edit_expansion_path(@expansion) %> |
+<%= link_to 'Back to expansions', expansions_path %>
+
+</div>

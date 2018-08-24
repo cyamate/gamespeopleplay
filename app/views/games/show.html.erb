@@ -1,0 +1,115 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+
+<br>
+
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @game.name %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @game.year %>
+</p>
+
+<p>
+  <strong>Publisher:</strong>
+  <%= @game.publisher.name %>
+</p>
+
+<p>
+  <strong>Designer:</strong>
+  <%= @game.designer.name %>
+</p>
+
+<p>
+  <strong>Player count:</strong>
+  <%= @game.pcount %>
+</p>
+
+<p>
+	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
+</p>
+
+<table class="table table-sm table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Year</th>
+      <th scope="col">Publisher</th>
+    </tr>
+  </thead>
+
+<tbody>
+	<% for expansion in @game.expansions %>
+    <tr>
+        <th scope="row"><%= expansion.id %></th>
+        <td><%= expansion.name %></td>
+        <td><%= expansion.year %></td>
+        <td><%= expansion.publisher.name %></td>
+	</tr>
+	<% end %>
+</tbody>
+</table>
+
+<br><br>
+
+<p>
+	<strong><i class="fas fa-trophy"></i> LOGS</strong>
+</p>
+
+<table class="table table-sm table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Date</th>
+      <th scope="col">Expansions</th>
+      <th scope="col">Player count</th>
+      <th scope="col">Players</th>
+      <th scope="col">Average</th>
+    </tr>
+  </thead>
+
+<tbody>
+	<% for log in @game.logs %>
+    <tr>
+        <th scope="row"><%= log.id %></th>
+        <td><%= log.date %></td>
+        <td><%= log.expansion.name if log.expansion %></td>
+        <td><%= log.pcount %></td>
+        <td>
+        	<ul class="list-unstyled">
+            	<% for player_score in log.player_scores %>
+             		<li><%= player_score.player.name %>: <%= player_score.score %></li>
+            	<% end %>
+          </ul>
+        </td>
+        <td><%= log.player_scores.average(:score).round(2) %></td>
+	</tr>
+	<% end %>
+</tbody>
+</table>
+
+<br><br>
+
+<p>
+	<h5>SCORES</h5>
+
+ 		<%= line_chart Log.joins(:game).group(:name).group_by_day(:date).count, legend: "bottom" %>
+
+ 		<%= line_chart PlayerScore.group(:score).group(:pcount).count, legend: "bottom" %>
+
+</p>
+
+<%= link_to 'Add', new_game_path(@game) %> |
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back to games', games_path %>
+
+</div>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  player_id: 1
+  log_id: 1
+  score: 1
+  player: one
+  log: one
+
+two:
+  player_id: 1
+  log_id: 1
+  score: 1
+  player: two
+  log: two

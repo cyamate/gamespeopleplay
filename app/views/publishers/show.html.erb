@@ -1,0 +1,73 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+
+<br>
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @publisher.name %>
+</p>
+
+<p>
+	<strong><i class="fas fa-dice"></i> GAMES</strong>
+</p>
+
+<table class="table table-sm table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col" width="40px">#</th>
+      <th scope="col">Name</th>
+      <th scope="col" width="100px">Year</th>
+      <th scope="col" width="300px">Designer</th>
+    </tr>
+  </thead>
+
+<tbody>
+	<% for game in @publisher.games %>
+    <tr>
+        <th scope="row"><%= game.id %></th>
+        <td><%= game.name %></td>
+        <td><%= game.year %></td>
+        <td><%= game.designer.name %></td>
+	</tr>
+	<% end %>
+</tbody>
+</table>
+
+<br><br>
+
+<p>
+	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
+</p>
+
+<table class="table table-sm table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col" width="40px">#</th>
+      <th scope="col">Name</th>
+      <th scope="col" width="100px">Year</th>
+      <th scope="col" width="300px">Designer</th>
+    </tr>
+  </thead>
+
+<tbody>
+	<% for expansion in @publisher.expansions %>
+    <tr>
+        <th scope="row"><%= expansion.id %></th>
+        <td><%= expansion.name %></td>
+        <td><%= expansion.year %></td>
+        <td><%= expansion.designer.name %></td>
+	</tr>
+	<% end %>
+</tbody>
+</table>
+
+<%= link_to 'Add', new_publisher_path(@publisher) %> |
+<%= link_to 'Edit', edit_publisher_path(@publisher) %> |
+<%= link_to 'Back to publishers', publishers_path %>
+
+</div>

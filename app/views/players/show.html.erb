@@ -1,0 +1,57 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+
+<br>
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @player.name %>
+</p>
+
+<p>
+	<strong><i class="fas fa-trophy"></i> LOGS</strong>
+</p>
+
+<table class="table table-sm table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Date</th>
+      <th scope="col">Game</th>
+      <th scope="col">Expansions</th>
+      <th scope="col">Player count</th>
+      <th scope="col">Players</th>
+      <th scope="col">Average</th>
+    </tr>
+  </thead>
+
+<tbody>
+	<% for log in @player.logs %>
+    <tr>
+        <th scope="row"><%= log.id %></th>
+        <td><%= log.date %></td>
+        <td><%= log.game.name %></td>
+        <td><%= log.expansion.name if log.expansion %></td>
+        <td><%= log.pcount %></td>
+        <td>
+        	<ul class="list-unstyled">
+            	<% for player_score in log.player_scores %>
+             		<li><%= player_score.player.name %>: <%= player_score.score %></li>
+            	<% end %>
+          </ul>
+        </td>
+        <td><%= log.player_scores.average(:score).round(2) %></td>
+	</tr>
+	<% end %>
+</tbody>
+</table>
+
+<%= link_to 'Add', new_player_path(@player) %> |
+<%= link_to 'Edit', edit_player_path(@player) %> |
+<%= link_to 'Back to Players', players_path %>
+
+</div>

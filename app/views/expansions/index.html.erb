@@ -1,0 +1,53 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+
+<div class="container">
+
+<p id="notice"><%= notice %></p>
+
+<h4><i class="fas fa-dice"></i> EXPANSIONS</h4>
+
+<table class="table table-borderless table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Base Game</th>
+      <th scope="col">Year</th>
+      <th scope="col">Publisher</th>
+      <th scope="col">Designer</th>
+      <th scope="col">Player count</th>
+      <th scope="col">Owned</th>
+      <th scope="col">Logs</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expansions.each do |expansion| %>
+      <tr>
+        <th scope="row" style="width: 40px;"><%= expansion.id %></th>
+        <td><%= expansion.name %></td>
+        <td><%= expansion.game.name %></td>
+        <td><%= expansion.year %></td>
+        <td><%= expansion.publisher.name %></td>
+        <td><%= expansion.designer.name %></td>
+        <td><%= expansion.pcount %></td>
+        <td><%= expansion.owned %></td>
+        <td><%= Log.where(expansion_id: expansion.id).count %></td>
+        <td style="width: 45px;"><%= link_to expansion do %><i class="far fa-eye fa-fw"></i><% end %></td>
+        <td style="width: 45px;"><%= link_to edit_expansion_path(expansion) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
+        <td style="width: 45px;"><%= link_to expansion, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p align="right">
+  <button type="button" class="btn btn-light btn-sm">
+    <a class="nav-link" href="/expansions/new"><i class="fas fa-plus-circle"></i> Add expansion</a>
+  </button>
+</p>
+
+</div>
