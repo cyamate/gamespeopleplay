@@ -24,17 +24,20 @@
   <%= @log.game.name %>
 </p>
 
-<p>
-  <strong>Expansion:</strong>
-  <%= @log.expansion.name if @log.expansion %>
-</p>
+  <strong>Expansions:</strong>
+    <ul>
+      <% for log_expansion in @log.log_expansions %>
+        <li class="list-unstyled"><%= log_expansion.expansion.name %></li>
+      <% end %>
+    </ul>
 
   <strong>Players:</strong>
-<ul>
-	<% for player_score in @log.player_scores %>
-		<li class="list-unstyled"><%= player_score.player.name %>: <%= player_score.score %></li>
-	<% end %>
-</ul>
+    <ul>
+	   <% for player_score in @log.player_scores %>
+	   	<li class="list-unstyled"><%= player_score.player.name %>: <%= player_score.score %></li>
+	   <% end %>
+    </ul>
+
 
 <p>
   <strong>Comments:</strong>

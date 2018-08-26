@@ -38,14 +38,16 @@
   </div>
 </div>
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <%= form.label :expansion_id %>
-    <div class="form-group">
-      <%= form.select(:expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
+  <%= form.fields_for :log_expansions do |nested| %>
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= nested.label :expansion_id %>
+      <div class="form-group">
+        <%= nested.select(:expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
+      </div>
     </div>
   </div>
-</div>
+  <% end %>
 
   <%= form.fields_for :player_scores do |builder| %>
   <div class="form-row">

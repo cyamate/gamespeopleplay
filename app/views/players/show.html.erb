@@ -35,7 +35,13 @@
         <th scope="row"><%= log.id %></th>
         <td><%= log.date %></td>
         <td><%= log.game.name %></td>
-        <td><%= log.expansion.name if log.expansion %></td>
+        <td>
+          <ul class="list-unstyled">
+            <% for log_expansion in log.log_expansions %>
+             <li><%= log_expansion.expansion.name %></li>
+            <% end %>
+          </ul>
+        </td>
         <td><%= log.pcount %></td>
         <td>
         	<ul class="list-unstyled">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_26_023558) do
+ActiveRecord::Schema.define(version: 2018_08_26_030241) do
 
   create_table "designers", force: :cascade do |t|
     t.string "name"
@@ -60,10 +60,18 @@ ActiveRecord::Schema.define(version: 2018_08_26_023558) do
     t.index ["publisher_id"], name: "index_games_on_publisher_id"
   end
 
+  create_table "log_expansions", force: :cascade do |t|
+    t.integer "log_id"
+    t.integer "expansion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expansion_id"], name: "index_log_expansions_on_expansion_id"
+    t.index ["log_id"], name: "index_log_expansions_on_log_id"
+  end
+
   create_table "logs", force: :cascade do |t|
     t.date "date"
     t.integer "game_id"
-    t.integer "expansion_id"
     t.integer "pcount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
