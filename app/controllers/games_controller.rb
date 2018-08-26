@@ -15,10 +15,13 @@ class GamesController < ApplicationController
   # GET /games/new
   def new
     @game = Game.new
+    2.times { game_designer = @game.game_designers.build }
   end
 
   # GET /games/1/edit
   def edit
+    @log = Game.find(params[:id])
+    1.times { game_designer = @game.game_designers.build }
   end
 
   # POST /games
@@ -69,6 +72,8 @@ class GamesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
-      params.require(:game).permit(:name, :pcount, :year, :owned, :designer_id, :publisher_id)
+      params.require(:game).permit(
+        :name, :pcount, :year, :owned, :publisher_id, 
+        game_designers_attributes: [:id, :game_id, :designer_id, :_destroy])
     end
 end
