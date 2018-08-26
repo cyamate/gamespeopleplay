@@ -24,8 +24,12 @@
 </p>
 
 <p>
-  <strong>Designer:</strong>
-  <%= @expansion.designer.name %>
+  <strong>Designers:</strong>
+    <ul>
+      <% for expansion_designer in @expansion.expansion_designers %>
+        <li class="list-unstyled"><%= expansion_designer.designer.name %></li>
+      <% end %>
+    </ul>
 </p>
 
 <p>

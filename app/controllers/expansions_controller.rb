@@ -15,10 +15,13 @@ class ExpansionsController < ApplicationController
   # GET /expansions/new
   def new
     @expansion = Expansion.new
+    2.times { expansion_designer = @expansion.expansion_designers.build }
   end
 
   # GET /expansions/1/edit
   def edit
+    @expansion = Expansion.find(params[:id])
+    1.times { expansion_designer = @expansion.expansion_designers.build }
   end
 
   # POST /expansions
@@ -69,6 +72,8 @@ class ExpansionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def expansion_params
-      params.require(:expansion).permit(:name, :pcount, :year, :owned, :publisher_id, :designer_id, :game_id)
+      params.require(:expansion).permit(
+        :name, :pcount, :year, :owned, :publisher_id, :game_id, 
+        expansion_designers_attributes: [:id, :expansion_id, :designer_id, :_destroy])
     end
 end

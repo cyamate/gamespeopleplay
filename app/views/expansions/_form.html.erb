@@ -32,21 +32,25 @@
 
 <div class="form-row">
 
-  <div class="control-group col-md-4">
+  <div class="control-group col-md-8">
     <%= form.label :publisher, 'Publisher' %>
     <div class="form-group">
       <%= form.select(:publisher_id, (Publisher.all.collect {|p| [ p.name, p.id ]}).sort, { }, { :class => 'form-control' }) %>
     </div>
   </div>
 
-  <div class="control-group col-md-4">
-    <%= form.label :designer, 'Designer' %>
-    <div class="form-group">
-      <%= form.select(:designer_id, (Designer.all.collect {|d| [ d.name, d.id ]}).sort, { }, { :class => 'form-control'}) %>
-    </div>
-  </div>
-
 </div>
+
+  <%= form.fields_for :expansion_designers do |builder| %>
+  <div class="form-row">
+      <div class="control-group col-md-8">
+        <%= builder.label :designer_id %>
+        <div class="form-group">
+          <%= builder.select(:designer_id, (Designer.all.collect {|d| [ d.name, d.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
+        </div>
+      </div>
+  </div>
+  <% end %>
 
 <div class="form-row">
   <div class="control-group col-md-8">

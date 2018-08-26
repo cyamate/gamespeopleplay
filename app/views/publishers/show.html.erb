@@ -32,7 +32,13 @@
         <th scope="row"><%= game.id %></th>
         <td><%= game.name %></td>
         <td><%= game.year %></td>
-        <td><%= game.designer.name %></td>
+        <td>
+          <ul class="list-unstyled">
+            <% for game_designer in game.game_designers %>
+              <li><%= game_designer.designer.name %></li>
+            <% end %>
+          </ul>
+        </td>
 	</tr>
 	<% end %>
 </tbody>
@@ -60,7 +66,13 @@
         <th scope="row"><%= expansion.id %></th>
         <td><%= expansion.name %></td>
         <td><%= expansion.year %></td>
-        <td><%= expansion.designer.name %></td>
+        <td>
+          <ul class="list-unstyled">
+            <% for expansion_designer in expansion.expansion_designers %>
+              <li><%= expansion_designer.designer.name %></li>
+            <% end %>
+          </ul>
+        </td>
 	</tr>
 	<% end %>
 </tbody>

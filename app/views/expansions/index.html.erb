@@ -32,7 +32,13 @@
         <td><%= expansion.game.name %></td>
         <td><%= expansion.year %></td>
         <td><%= expansion.publisher.name %></td>
-        <td><%= expansion.designer.name %></td>
+        <td>
+          <ul class="list-unstyled">
+            <% for expansion_designer in expansion.expansion_designers %>
+             <li><%= expansion_designer.designer.name %></li>
+            <% end %>
+          </ul>
+        </td>
         <td><%= expansion.pcount %></td>
         <td><%=h show_check_icon(expansion.owned) %></td>
         <td><%= Log.where(expansion_id: expansion.id).count %></td>

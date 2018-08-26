@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_26_015347) do
+ActiveRecord::Schema.define(version: 2018_08_26_023558) do
 
   create_table "designers", force: :cascade do |t|
     t.string "name"
@@ -18,17 +18,24 @@ ActiveRecord::Schema.define(version: 2018_08_26_015347) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "expansion_designers", force: :cascade do |t|
+    t.integer "expansion_id"
+    t.integer "designer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["designer_id"], name: "index_expansion_designers_on_designer_id"
+    t.index ["expansion_id"], name: "index_expansion_designers_on_expansion_id"
+  end
+
   create_table "expansions", force: :cascade do |t|
     t.string "name"
     t.integer "pcount"
     t.integer "year"
-    t.integer "designer_id"
-    t.integer "publisher_id"
-    t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "owned"
-    t.index ["designer_id"], name: "index_expansions_on_designer_id"
+    t.integer "publisher_id"
+    t.integer "game_id"
     t.index ["game_id"], name: "index_expansions_on_game_id"
     t.index ["publisher_id"], name: "index_expansions_on_publisher_id"
   end
