@@ -16,7 +16,7 @@
   <div class="control-group col-md-4">
     <%= form.label :date %>
     <div class="form-group">
-      <%= form.date_select :date %>
+      <%= form.date_select(:date, { }, { :class => 'form-control' }) %>
     </div>
   </div>
 
@@ -33,7 +33,7 @@
   <div class="form-group col-md-8">
     <%= form.label :game_id %>
     <div class="form-group">
-      <%= form.select :game_id, (Game.all.collect {|g| [ g.name, g.id ]}).sort %>
+      <%= form.select(:game_id, (Game.all.collect {|g| [ g.name, g.id ]}).sort, { }, { :class => 'form-control' }) %>
     </div>
   </div>
 </div>
@@ -42,7 +42,7 @@
   <div class="form-group col-md-8">
     <%= form.label :expansion_id %>
     <div class="form-group">
-      <%= form.select :expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, :include_blank => true %>
+      <%= form.select(:expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
     </div>
   </div>
 </div>
@@ -52,7 +52,7 @@
       <div class="control-group col-md-4">
         <%= builder.label :player_id %>
         <div class="form-group">
-          <%= builder.select :player_id, (Player.all.collect {|p| [ p.name, p.id ]}).sort, :include_blank => true %>
+          <%= builder.select(:player_id, (Player.all.collect {|p| [ p.name, p.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
         </div>
       </div>
       <div class="control-group col-md-4">

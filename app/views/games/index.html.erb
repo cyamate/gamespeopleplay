@@ -32,7 +32,7 @@
         <td><%= game.publisher.name %></td>
         <td><%= game.designer.name %></td>
         <td><%= game.pcount %></td>
-        <td><%= game.owned %></td>
+        <td><%=h show_check_icon(game.owned) %></td>
         <td><%= Log.where(game_id: game.id).count %></td>
         <td style="width: 45px;"><%= link_to game do %><i class="far fa-eye fa-fw"></i><% end %></td>
         <td style="width: 45px;"><%= link_to edit_game_path(game) do %><i class="fas fa-edit fa-fw"></i><% end %></td>

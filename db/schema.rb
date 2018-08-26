@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_24_175552) do
+ActiveRecord::Schema.define(version: 2018_08_25_233134) do
 
   create_table "designers", force: :cascade do |t|
     t.string "name"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2018_08_24_175552) do
     t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "owned"
+    t.boolean "owned"
     t.index ["designer_id"], name: "index_expansions_on_designer_id"
     t.index ["game_id"], name: "index_expansions_on_game_id"
     t.index ["publisher_id"], name: "index_expansions_on_publisher_id"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2018_08_24_175552) do
     t.integer "publisher_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "owned"
+    t.boolean "owned"
     t.index ["designer_id"], name: "index_games_on_designer_id"
     t.index ["publisher_id"], name: "index_games_on_publisher_id"
   end

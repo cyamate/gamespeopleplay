@@ -35,14 +35,14 @@
   <div class="control-group col-md-4">
     <%= form.label :publisher, 'Publisher' %>
     <div class="form-group">
-      <%= form.select :publisher_id, (Publisher.all.collect {|p| [ p.name, p.id ]}).sort %>
+      <%= form.select(:publisher_id, (Publisher.all.collect {|p| [ p.name, p.id ]}).sort, { }, { :class => 'form-control'}) %>
     </div>
   </div>
 
   <div class="control-group col-md-4">
     <%= form.label :designer, 'Designer' %>
     <div class="form-group">
-      <%= form.select :designer_id, (Designer.all.collect {|d| [ d.name, d.id ]}).sort %>
+      <%= form.select(:designer_id, (Designer.all.collect {|d| [ d.name, d.id ]}).sort, { }, { :class => 'form-control'}) %>
     </div>
   </div>
 

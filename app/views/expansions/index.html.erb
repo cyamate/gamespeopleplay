@@ -34,7 +34,7 @@
         <td><%= expansion.publisher.name %></td>
         <td><%= expansion.designer.name %></td>
         <td><%= expansion.pcount %></td>
-        <td><%= expansion.owned %></td>
+        <td><%=h show_check_icon(expansion.owned) %></td>
         <td><%= Log.where(expansion_id: expansion.id).count %></td>
         <td style="width: 45px;"><%= link_to expansion do %><i class="far fa-eye fa-fw"></i><% end %></td>
         <td style="width: 45px;"><%= link_to edit_expansion_path(expansion) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
