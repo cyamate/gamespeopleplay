@@ -28,7 +28,7 @@
 
         <td>
           <ul class="list-unstyled">
-            <% PlayerScore.where(player_id: player.id).joins(log: :game).group(:name).count.sort.take(3).each do |g| %>
+            <% PlayerScore.where(player_id: player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(3).each do |g| %>
               <li><%= g[0] %></li>
             <% end %> 
           </ul>
@@ -47,5 +47,7 @@
     <a class="nav-link" href="/players/new"><i class="fas fa-plus-circle"></i> Add Player</a>
   </button>
 </p>
+
+<br>
 
 </div>

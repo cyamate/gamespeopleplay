@@ -5,11 +5,14 @@ class GamesController < ApplicationController
   # GET /games.json
   def index
     @games = Game.all
+    @most = Game.most
   end
 
   # GET /games/1
   # GET /games/1.json
   def show
+    @scores = Log.joins(:player_scores).where(game_id: @game.id).pluck(:score, :pcount)
+    @logshistory = Log.where(game_id: @game.id).group_by_month(:date, last: 12).count.sort
   end
 
   # GET /games/new
@@ -20,7 +23,7 @@ class GamesController < ApplicationController
 
   # GET /games/1/edit
   def edit
-    @log = Game.find(params[:id])
+    @game = Game.find(params[:id])
     1.times { game_designer = @game.game_designers.build }
   end
 

@@ -10,6 +10,9 @@ class LogsController < ApplicationController
   # GET /logs/1
   # GET /logs/1.json
   def show
+    @logsbygame = Log.joins(:player_scores).where(game_id: @log.game).pluck(:score, :pcount)
+    @logpoints = PlayerScore.joins(:log).where(log_id: @log.id).pluck(:score, :pcount)
+    @sum = @logsbygame + @logpoints
   end
 
   # GET /logs/new

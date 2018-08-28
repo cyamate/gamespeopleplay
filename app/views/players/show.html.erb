@@ -1,5 +1,58 @@
 <head>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawLogsChart);
+
+      // Draw the pie chart for the Anthony's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawScoresPcountChart);
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawLogsChart() {
+
+        // Create the data table for Sarah's pizza.
+        var data = JSON.parse('<%= @most.to_json.html_safe -%>');
+        data = [['Month', 'Logs']].concat(data);
+        data = google.visualization.arrayToDataTable(data);
+
+        // Set chart options
+        var options = {
+                       legend: { position: "none" },
+                       colors: ['#ffcc00'],
+                       hAxis: { format: '0' }
+                      }
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('most_chart_div'));
+        chart.draw(data, options);
+      }
+
+      // Callback that draws the pie chart for Anthony's pizza.
+      function drawScoresPcountChart() {
+
+        // Create the data table for Anthony's pizza.
+        var data = JSON.parse('<%= @logshistory.to_json.html_safe -%>');
+        data = [['Player count', 'Score']].concat(data);
+        data = google.visualization.arrayToDataTable(data);
+
+        // Set chart options
+        var options = {
+                       legend: { position: "none" },
+                       colors: ['#ffcc00'],
+                       vAxis: { format: '0', gridlines: { color: "transparent" } },
+                      }
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.LineChart(document.getElementById('logs_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 
 <br>
@@ -7,57 +60,102 @@
 
 <p id="notice"><%= notice %></p>
 
+<div class="card mb-3">
+  <div class="card-header">
+    <strong><%= @player.name.upcase %></strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="table table-sm table-borderless">
+        
+      </div>
+    </li>
+    
+    <li class="list-group-item">
+      <p>MOST PLAYED GAMES</p>
+        <ul class="list-unstyled">
+            <% PlayerScore.where(player_id: @player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(5).each do |g| %>
+              <li><%= g[0] %></li>
+            <% end %> 
+          </ul>
+    </li>
+  </ul>
+</div>
+<br><br>
+
 <p>
-  <strong>Name:</strong>
-  <%= @player.name %>
+  <strong><i class="fas fa-chart-bar"></i> MOST PLAYED GAMES</strong>
+
+  <div id="most_chart_div" style="width=100%,"></div>
 </p>
 
+
+
 <p>
-	<strong><i class="fas fa-trophy"></i> LOGS</strong>
+  <strong><i class="fas fa-chart-line"></i> LOGS HISTORY WITHIN YEAR</strong>
+
+  <div id="logs_chart_div" style="width=100%,"></div>
 </p>
 
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Date</th>
-      <th scope="col">Game</th>
-      <th scope="col">Expansions</th>
-      <th scope="col">Player count</th>
-      <th scope="col">Players</th>
-      <th scope="col">Average</th>
-    </tr>
-  </thead>
+<br><br>
 
-<tbody>
-	<% for log in @player.logs %>
-    <tr>
-        <th scope="row"><%= log.id %></th>
-        <td><%= log.date %></td>
-        <td><%= log.game.name %></td>
-        <td>
-          <ul class="list-unstyled">
-            <% for log_expansion in log.log_expansions %>
-             <li><%= log_expansion.expansion.name %></li>
-            <% end %>
-          </ul>
-        </td>
-        <td><%= log.pcount %></td>
-        <td>
-        	<ul class="list-unstyled">
-            	<% for player_score in log.player_scores %>
-             		<li><%= player_score.player.name %>: <%= player_score.score %></li>
-            	<% end %>
-          </ul>
-        </td>
-        <td><%= log.player_scores.average(:score).round(2) %></td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
+<div class="card mb-3">
+  <div class="card-body">
+    <p>
+      <strong><i class="fas fa-trophy"></i> LOGS</strong>
+    </p>
+
+    <small><table class="table table-sm table-borderless table-hover">
+        <tr>
+          <td>#</td>
+          <td>DATE</td>
+          <td>GAME</td>
+          <td>PLAYER COUNT</td>
+          <td>PLAYERS</td>
+          <td>RESULT</td>
+          <td>AVERAGE</td>
+        </tr>
+
+    <tbody>
+      <% for log in @player.logs %>
+        <tr>
+            <td width="30px"><%= log.id %></td>
+            <td><%= log.date %></td>
+            <td><%= log.game.name %>
+              <ul>
+                <% for log_expansion in log.log_expansions %>
+                 <li class="list-unstyled"><%= log_expansion.expansion.name %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= log.pcount %></td>
+            <td>
+              <ul class="list-unstyled">
+                <% for player_score in log.player_scores %>
+                  <li><%= player_score.player.name %>: <%= player_score.score %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td>
+              
+            </td>
+            <td><%= log.player_scores.average(:score).round(2) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+    </table></small>
+  </div>
+</div>
 
 <%= link_to 'Add', new_player_path(@player) %> |
 <%= link_to 'Edit', edit_player_path(@player) %> |
 <%= link_to 'Back to Players', players_path %>
+
+<br>
+<br>
+<%= PlayerScore.joins(:log).where(player_id: @player.id).group(:log_id).count.sort %>
+<br>
+<br>
+
 
 </div>

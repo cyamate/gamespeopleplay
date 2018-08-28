@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(version: 2018_08_26_030241) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "owned"
-    t.integer "publisher_id"
     t.integer "game_id"
+    t.integer "publisher_id"
     t.index ["game_id"], name: "index_expansions_on_game_id"
     t.index ["publisher_id"], name: "index_expansions_on_publisher_id"
   end

@@ -3,16 +3,17 @@
 <p>
 	<h5>Total plays</h5>
 
- 		<%= line_chart Log.group_by_week(:date).count %>
+ 		<%= line_chart Log.group_by_month(:date).count %>
 </p>
-
+<br><br>
 <p>
  	<h5>Log history by game</h5>
 
- 		<%= line_chart Log.joins(:game).group(:name).group_by_day(:date).count, legend: "bottom" %>
+ 		<%= line_chart Log.joins(:game).group(:name).group_by_month(:date).count, legend: "bottom" %>
 
  		
 </p>
+<br><br>
 
 <p>
  	<h5>Most played games</h5>
@@ -20,7 +21,5 @@
  		<%= bar_chart Log.joins(:game).group(:name).count %>
  		
 </p>
-
-
 
 </div>

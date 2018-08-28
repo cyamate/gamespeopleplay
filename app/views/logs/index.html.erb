@@ -15,7 +15,6 @@
       <th scope="col">Date</th>
       <th scope="col">Player count</th>
       <th scope="col">Game</th>
-      <th scope="col">Expansions</th>
       <th scope="col">Players</th>
       <th scope="col">Average</th>
       <th scope="col" colspan="3"></th>
@@ -28,11 +27,10 @@
         <th scope="row" style="width: 40px;"><%= log.id %></th>
         <td><%= log.date %></td>
         <td><%= log.pcount %></td>
-        <td><%= log.game.name %></td>
-        <td>
-          <ul class="list-unstyled">
+        <td><%= log.game.name %>
+          <ul>
             <% for log_expansion in log.log_expansions %>
-             <li><%= log_expansion.expansion.name %></li>
+             <li class="list-unstyled"><%= log_expansion.expansion.name %></li>
             <% end %>
           </ul>
         </td>
@@ -43,7 +41,7 @@
             <% end %>
           </ul>
         </td>
-        <td><%= log.player_scores.average(:score).round(2) %></td>
+        <td><%= log.player_scores.average(:score).round(2) if log.player_scores %></td>
         <td style="width: 45px;"><%= link_to log do %><i class="far fa-eye fa-fw"></i><% end %></td>
         <td style="width: 45px;"><%= link_to edit_log_path(log) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
         <td style="width: 45px;"><%= link_to log, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>

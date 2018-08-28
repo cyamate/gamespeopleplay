@@ -1,5 +1,62 @@
 <head>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Draw the pie chart for Sarah's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawLogsChart);
+
+      // Draw the pie chart for the Anthony's pizza when Charts is loaded.
+      google.charts.setOnLoadCallback(drawScoresPcountChart);
+
+      // Callback that draws the pie chart for Sarah's pizza.
+      function drawLogsChart() {
+
+        // Create the data table for Sarah's pizza.
+        var data = JSON.parse('<%= @logshistory.to_json.html_safe -%>');
+        data = [['Month', 'Logs']].concat(data);
+        data = google.visualization.arrayToDataTable(data);
+
+        // Set chart options
+        var options = {
+                       height: 400,
+                       legend: { position: "none" },
+                       colors: ['#ffcc00'],
+                       vAxis: { format: '0' }
+                      }
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.LineChart(document.getElementById('logs_chart_div'));
+        chart.draw(data, options);
+      }
+
+      // Callback that draws the pie chart for Anthony's pizza.
+      function drawScoresPcountChart() {
+
+        // Create the data table for Anthony's pizza.
+        var data = JSON.parse('<%= @scores.to_json.html_safe -%>');
+        data = [['Player count', 'Score']].concat(data);
+        data = google.visualization.arrayToDataTable(data);
+
+        // Set chart options
+        var options = {
+                       height: 300,
+                       legend: { position: "none" },
+                       colors: ['#ffcc00'],
+                       vAxis: { title: 'Player count', format: '0', gridlines: { color: "transparent" } },
+                       hAxis: { title: 'Score' }
+                      }
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        var chart = new google.visualization.ScatterChart(document.getElementById('scores_count_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
 </head>
 
 <br>
@@ -8,60 +65,58 @@
 
 <p id="notice"><%= notice %></p>
 
+<div class="card mb-3">
+  <div class="card-header">
+    <strong><%= @game.name.upcase %></strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="table table-sm table-borderless">
+        <table>
+          <tr>
+            <td width="120px">Year</td>
+            <td><%= @game.year %></td>
+          </tr>
+          <tr>
+            <td>Publisher</td>
+            <td><%= @game.publisher.name %></td>
+          </tr>
+          <tr>
+            <td>Designers</td>
+            <td>
+              <ul class="list-unstyled"><% for game_designer in @game.game_designers %>
+                <li><%= game_designer.designer.name %></li>
+              <% end %></ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Player count</td>
+            <td><%= @game.pcount %></td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    
+    <li class="list-group-item">
+      <p>EXPANSIONS</p>
+        <% for expansion in @game.expansions %>
+          <ul class="list-unstyled">
+            <li><%= expansion.name %> (<%= expansion.year %>, <%= expansion.publisher.name %>)</li>
+        <% end %></ul>
+    </li>
+  </ul>
+</div>
+<br><br>
+
 <p>
-  <strong>Name:</strong>
-  <%= @game.name %>
+  <strong><i class="fas fa-chart-line"></i> LOGS WITHIN YEAR</strong>
+  <div id="logs_chart_div" style="width=100%,"></div>
 </p>
 
 <p>
-  <strong>Year:</strong>
-  <%= @game.year %>
+  <strong><i class="fas fa-chart-bar"></i> SCORES BY PLAYER COUNT</strong>
+  <div id="scores_count_chart_div" style="width=100%,"></div>
 </p>
-
-<p>
-  <strong>Publisher:</strong>
-  <%= @game.publisher.name %>
-</p>
-
-<p>
-  <strong>Designers:</strong>
-    <ul>
-      <% for game_designer in @game.game_designers %>
-        <li class="list-unstyled"><%= game_designer.designer.name %></li>
-      <% end %>
-    </ul>
-</p>
-
-<p>
-  <strong>Player count:</strong>
-  <%= @game.pcount %>
-</p>
-
-<p>
-	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
-</p>
-
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Year</th>
-      <th scope="col">Publisher</th>
-    </tr>
-  </thead>
-
-<tbody>
-	<% for expansion in @game.expansions %>
-    <tr>
-        <th scope="row"><%= expansion.id %></th>
-        <td><%= expansion.name %></td>
-        <td><%= expansion.year %></td>
-        <td><%= expansion.publisher.name %></td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
 
 <br><br>
 
@@ -69,51 +124,56 @@
 	<strong><i class="fas fa-trophy"></i> LOGS</strong>
 </p>
 
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Date</th>
-      <th scope="col">Expansions</th>
-      <th scope="col">Player count</th>
-      <th scope="col">Players</th>
-      <th scope="col">Average</th>
-    </tr>
-  </thead>
+<div class="card mb-3">
+  <div class="card-body">
+    <small><table class="table table-sm table-borderless table-hover">
+        <tr>
+          <td>#</td>
+          <td>DATE</td>
+          <td>EXPANSIONS</td>
+          <td>PLAYER COUNT</td>
+          <td>PLAYERS</td>
+          <td>AVERAGE</td>
+        </tr>
 
-<tbody>
-	<% for log in @game.logs %>
-    <tr>
-        <th scope="row"><%= log.id %></th>
-        <td><%= log.date %></td>
-        <td><%= log.expansion.name if log.expansion %></td>
-        <td><%= log.pcount %></td>
-        <td>
-        	<ul class="list-unstyled">
-            	<% for player_score in log.player_scores %>
-             		<li><%= player_score.player.name %>: <%= player_score.score %></li>
-            	<% end %>
-          </ul>
-        </td>
-        <td><%= log.player_scores.average(:score).round(2) %></td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
+    <tbody>
+    	<% for log in @game.logs %>
+        <tr>
+            <td width="30px"><%= log.id %></td>
+            <td><%= log.date %></td>
+            <td>
+              <ul class="list-unstyled">
+                <% for log_expansion in log.log_expansions %>
+                 <li><%= log_expansion.expansion.name %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= log.pcount %></td>
+            <td>
+            	<ul class="list-unstyled">
+                	<% for player_score in log.player_scores %>
+                 		<li><%= player_score.player.name %>: <%= player_score.score %></li>
+                	<% end %>
+              </ul>
+            </td>
+            <td><%= log.player_scores.average(:score).round(2) %></td>
+    	</tr>
+    	<% end %>
+    </tbody>
+    </table></small>
+  </div>
+</div>
 
-<br><br>
-
-<p>
-	<h5>SCORES</h5>
-
- 		<%= line_chart Log.joins(:game).group(:name).group_by_day(:date).count, legend: "bottom" %>
-
- 		<%= line_chart PlayerScore.group(:score).group(:pcount).count, legend: "bottom" %>
-
-</p>
+<br>
 
 <%= link_to 'Add', new_game_path(@game) %> |
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back to games', games_path %>
+
+<br>
+<br>
+<br>
+<br>
+
 
 </div>

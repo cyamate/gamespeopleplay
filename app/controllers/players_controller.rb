@@ -10,6 +10,8 @@ class PlayersController < ApplicationController
   # GET /players/1
   # GET /players/1.json
   def show
+    @most =  PlayerScore.where(player_id: @player.id).joins(log: :game).group(:name).count.sort
+    @logshistory = PlayerScore.where(player_id: @player.id).joins(log: :game).group_by_month(:date, last: 12).count.sort
   end
 
   # GET /players/new
