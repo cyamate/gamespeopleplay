@@ -1,10 +1,11 @@
 class LogsController < ApplicationController
   before_action :set_log, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /logs
   # GET /logs.json
   def index
-    @logs = Log.all
+    @logs = Log.order("#{sort_column} #{sort_direction}").page(params[:page]).per(10)
   end
 
   # GET /logs/1
@@ -70,6 +71,18 @@ class LogsController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["date", "pcount"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "date"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_log
       @log = Log.find(params[:id])
@@ -78,7 +91,7 @@ class LogsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def log_params
       params.require(:log).permit(
-        :date, :game_id, :pcount, :game_id, :expansion_id, :comment,  
+        :date, :game_id, :pcount, :game_id, :expansion_id, :comment,
         player_scores_attributes: [:id, :log_id, :player_id, :score, :_destroy], 
         log_expansions_attributes: [:id, :expansion_id, :log_id, :_destroy])
     end

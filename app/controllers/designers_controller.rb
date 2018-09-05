@@ -1,10 +1,11 @@
 class DesignersController < ApplicationController
   before_action :set_designer, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /designers
   # GET /designers.json
   def index
-    @designers = Designer.all
+    @designers = Designer.order("#{sort_column} #{sort_direction}").page(params[:page]).per(10)
   end
 
   # GET /designers/1
@@ -64,6 +65,18 @@ class DesignersController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["name"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "name"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_designer
       @designer = Designer.find(params[:id])

@@ -8,32 +8,64 @@
 
 <h4><i class="fas fa-pen-nib"></i> DESIGNERS</h4>
 
-<table class="table table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="card mb-3">
+  <div class="card-body">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col"><%= sort_link "name", "NAME" %></th>
+          <th>GAMES</th>
+          <th>LOGS</th>
+          <th>TOP 3</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @designers.each do |designer| %>
+      <tbody>
+        <% @designers.each do |designer| %>
+          <tr>
+            <td><%= designer.name %></td>
+            <td><%= GameDesigner.where(designer_id: designer.id).count %></td>
+            <td><%= GameDesigner.where(designer_id: designer.id).joins(game: :logs).count %></td>
+            <td>
+              <ul class="list-unstyled">
+              <% GameDesigner.where(designer_id: designer.id).joins(game: :logs).group(:name).order('count_id desc').count('id').take(3).each do |g| %>
+                  <li><%= g[0] %></li>
+              <% end %>
+              </ul>
+            </td>
+            <td style="width: 45px;"><%= link_to designer do %><i class="far fa-eye fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to edit_designer_path(designer) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to designer, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<br>
+  <center>
+    <table>
       <tr>
-        <th scope="row" style="width: 40px;"><%= designer.id %></th>
-        <td><%= designer.name %></td>
-        <td style="width: 45px;"><%= link_to designer do %><i class="far fa-eye fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to edit_designer_path(designer) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to designer, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+        <td><%= paginate @designers %></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </table>
+
+    <table>
+      <tr>
+        <td><%= page_entries_info @designers %></td>
+      </tr>
+    </table>
+  </center>
+
+  </div>
+</div>
 
 <p align="right">
   <button type="button" class="btn btn-light btn-sm">
     <a class="nav-link" href="/designers/new"><i class="fas fa-plus-circle"></i> Add designer</a>
   </button>
 </p>
+
+<br><br>
 
 </div>

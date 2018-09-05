@@ -1,10 +1,11 @@
 class PublishersController < ApplicationController
   before_action :set_publisher, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /publishers
   # GET /publishers.json
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.order("#{sort_column} #{sort_direction}").page(params[:page]).per(10)
   end
 
   # GET /publishers/1
@@ -62,6 +63,18 @@ class PublishersController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["name", "id"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "name"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_publisher
       @publisher = Publisher.find(params[:id])

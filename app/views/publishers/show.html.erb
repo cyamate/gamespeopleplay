@@ -7,79 +7,112 @@
 
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @publisher.name %>
-</p>
+<div class="card mb-3">
+  <div class="card-header">
+    <strong><%= @publisher.name.upcase %></strong>
+  </div>
+  <div class="card-body">
+  <p>MOST PLAYED</p>
+    <ul class="list-unstyled">
+      <% Game.where(publisher_id: @publisher.id).joins(:logs).group(:name).order('count_id desc').count('id').take(5).each do |g| %>
+        <li><%= g[0] %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
-<p>
-	<strong><i class="fas fa-dice"></i> GAMES</strong>
-</p>
+<br>
+<div class="card mb-3">
+  <div class="card-body">
+    <p>
+      <strong><i class="fas fa-dice"></i> GAMES</strong>
+    </p>
 
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col" width="40px">#</th>
-      <th scope="col">Name</th>
-      <th scope="col" width="100px">Year</th>
-      <th scope="col" width="300px">Designer</th>
-    </tr>
-  </thead>
+    <small>
+    <table class="table table-sm table-borderless table-hover">
+      <thead>
+        <tr>
+          <td style="width: 30px;">#</td>
+          <td style="width: 50%">NAME</td>
+          <td>PLAYER COUNT</td>
+          <td>YEAR</td>
+          <td>DESIGNER</td>
+          <td>LOGS</td>
+        </tr>
+      </thead>
 
-<tbody>
-	<% for game in @publisher.games %>
-    <tr>
-        <th scope="row"><%= game.id %></th>
-        <td><%= game.name %></td>
-        <td><%= game.year %></td>
-        <td>
-          <ul class="list-unstyled">
-            <% for game_designer in game.game_designers %>
-              <li><%= game_designer.designer.name %></li>
-            <% end %>
-          </ul>
-        </td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
+      <tbody>
+      <% for game in @publisher.games %>
+        <tr>
+          <td><%= game.id %></td>
+          <td><%= game.name %></td>
+          <td><%= game.pcount %></td>
+          <td><%= game.year %></td>
+          <td>          
+            <ul class="list-unstyled">
+              <% for game_designer in game.game_designers %>
+                <li><%= game_designer.designer.name %></li>
+              <% end %>
+            </ul>
+          </td>
+          <td><%= Log.where(game_id: game.id).count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table></small>
+  </div>
+</div>
+
+<br>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <p>
+      <strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
+    </p>
+
+    <small>
+    <table class="table table-sm table-borderless table-hover">
+      <thead>
+        <tr>
+          <th style="width: 30px;">#</th>
+          <td style="width: 25%">NAME</td>
+          <td style="width: 25%">BASE GAME</td>
+          <td>PLAYER COUNT</td>
+          <td>YEAR</td>
+          <td>DESIGNER</td>
+          <td>LOGS</td>
+        </tr>
+      </thead>
+
+    <tbody>
+      <% for expansion in @publisher.expansions %>
+        <tr>
+            <td><%= expansion.id %></td>
+            <td><%= expansion.name %></td>
+            <td><%= expansion.game.name %></td>
+            <td><%= expansion.pcount %></td>
+            <td><%= expansion.year %></td>
+            <td>
+              <ul class="list-unstyled">
+                <% for expansion_designer in expansion.expansion_designers %>
+                  <li><%= expansion_designer.designer.name %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= LogExpansion.where(expansion_id: expansion.id).count %></td>
+      </tr>
+      <% end %>
+    </tbody>
+    </table></small>
+  </div>
+</div>
 
 <br><br>
-
-<p>
-	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
-</p>
-
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col" width="40px">#</th>
-      <th scope="col">Name</th>
-      <th scope="col" width="100px">Year</th>
-      <th scope="col" width="300px">Designer</th>
-    </tr>
-  </thead>
-
-<tbody>
-	<% for expansion in @publisher.expansions %>
-    <tr>
-        <th scope="row"><%= expansion.id %></th>
-        <td><%= expansion.name %></td>
-        <td><%= expansion.year %></td>
-        <td>
-          <ul class="list-unstyled">
-            <% for expansion_designer in expansion.expansion_designers %>
-              <li><%= expansion_designer.designer.name %></li>
-            <% end %>
-          </ul>
-        </td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
 
 <%= link_to 'Add', new_publisher_path(@publisher) %> |
 <%= link_to 'Edit', edit_publisher_path(@publisher) %> |
 <%= link_to 'Back to publishers', publishers_path %>
 
+<br><br><br>
 </div>

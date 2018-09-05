@@ -59,8 +59,6 @@
 
 </head>
 
-<br>
-
 <div class="container">
 
 <p id="notice"><%= notice %></p>
@@ -127,6 +125,7 @@
 <div class="card mb-3">
   <div class="card-body">
     <small><table class="table table-sm table-borderless table-hover">
+      <thead>
         <tr>
           <td>#</td>
           <td>DATE</td>
@@ -135,6 +134,7 @@
           <td>PLAYERS</td>
           <td>AVERAGE</td>
         </tr>
+      </thead>
 
     <tbody>
     	<% for log in @game.logs %>
@@ -166,9 +166,9 @@
 
 <br>
 
-<%= link_to 'Add', new_game_path(@game) %> |
-<%= link_to 'Edit', edit_game_path(@game) %> |
-<%= link_to 'Back to games', games_path %>
+
+<%= link_to 'Add', new_game_path %> |
+<%= link_to 'Edit', edit_game_path(@game) %>
 
 <br>
 <br>
@@ -177,3 +177,4 @@
 
 
 </div>
+

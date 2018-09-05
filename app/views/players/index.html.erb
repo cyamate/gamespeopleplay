@@ -8,39 +8,58 @@
 
 <h4><i class="fas fa-users"></i> PLAYERS</h4>
 
-<table class="table table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col"><%= link_to "#", :sort => "id" %></th>
-      <th scope="col"><%= link_to "Name", :sort => "name" %></th>
-      <th scope="col">Total Plays</th>
-      <th scope="col">Top 3</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="card mb-3">
+  <div class="card-body">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col" width="40px"><%= sort_link "id", "#" %></th>
+          <th scope="col"><%= sort_link "name", "NAME" %></th>
+          <th scope="col">LOGS</th>
+          <th scope="col">TOP 3</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @players.each do |player| %>
+      <tbody>
+        <% @players.each do |player| %>
+          <tr>
+            <td><%= player.id %></td>
+            <td><%= player.name %></td>
+            <td><%= PlayerScore.where(player_id: player.id).count %></td>
+            <td>
+              <ul class="list-unstyled">
+                <% PlayerScore.where(player_id: player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(3).each do |g| %>
+                  <li><%= g[0] %></li>
+                <% end %> 
+              </ul>
+            </td>
+
+            <td style="width: 45px;"><%= link_to player do %><i class="far fa-eye fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to edit_player_path(player) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to player, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<br>
+  <center>
+    <table>
       <tr>
-        <th scope="row" style="width: 40px;"><%= player.id %></th>
-        <td><%= player.name %></td>
-        <td><%= PlayerScore.where(player_id: player.id).count %></td>
-
-        <td>
-          <ul class="list-unstyled">
-            <% PlayerScore.where(player_id: player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(3).each do |g| %>
-              <li><%= g[0] %></li>
-            <% end %> 
-          </ul>
-        </td>
-
-        <td style="width: 45px;"><%= link_to player do %><i class="far fa-eye fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to edit_player_path(player) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to player, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+        <td><%= paginate @players %></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </table>
+
+    <table>
+      <tr>
+        <td><%= page_entries_info @players %></td>
+      </tr>
+    </table>
+  </center>
+
+  </div>
+</div>
 
 <p align="right">
   <button type="button" class="btn btn-light btn-sm">

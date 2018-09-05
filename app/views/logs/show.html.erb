@@ -146,11 +146,17 @@
 
 <br><br>
 
-<%= Log.joins(:player_scores).where(game_id: @log.game).pluck(:score, :pcount) %>
+<%= Log.joins(:player_scores, :log_expansions).where(:game_id => @log.game).pluck(:expansion_id, :score, :pcount) %>
 <br>
 <br>
-<%= PlayerScore.joins(:log).where(log_id: @log.id).pluck(:score, :pcount) %>
-
+<%= PlayerScore.joins(log: :log_expansions).where(log_id: @log.id).pluck(:expansion_id, :score, :pcount) %>
+<br>
+<br>
+<ul class="list-unstyled">
+                <% for log_expansion in @log.log_expansions %>
+                  <li><%= log_expansion.expansion.id %></li>
+                <% end %>
+              </ul>
 <br>
 <br>
 <br>

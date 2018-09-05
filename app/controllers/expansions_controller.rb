@@ -1,10 +1,11 @@
 class ExpansionsController < ApplicationController
   before_action :set_expansion, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /expansions
   # GET /expansions.json
   def index
-    @expansions = Expansion.all
+    @expansions = Expansion.order("#{sort_column} #{sort_direction}").page(params[:page]).per(20)
   end
 
   # GET /expansions/1
@@ -65,6 +66,18 @@ class ExpansionsController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["name", "pcount", "year", "owned", "game"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "name"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_expansion
       @expansion = Expansion.find(params[:id])

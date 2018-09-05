@@ -43,7 +43,7 @@
     <div class="form-group col-md-8">
       <%= nested.label :expansion_id %>
       <div class="form-group">
-        <%= nested.select(:expansion_id, (Expansion.all.collect {|e| [ e.name, e.id ]}).sort, { :include_blank => true }, { :class => 'form-control' }) %>
+        <%= nested.grouped_collection_select(:expansion_id, Game.order(:name), :expansions, :name, :id, :name, { :include_blank => true }, { :class => 'form-control' }) %>
       </div>
     </div>
   </div>

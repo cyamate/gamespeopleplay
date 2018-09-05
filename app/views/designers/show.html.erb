@@ -8,68 +8,101 @@
 
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @designer.name %>
-</p>
+<div class="card mb-3">
+  <div class="card-header">
+    <strong><%= @designer.name.upcase %></strong>
+  </div>
+  <div class="card-body">
+    <p>MOST PLAYED</p>
+    <ul class="list-unstyled">
+      <% GameDesigner.where(designer_id: @designer.id).joins(game: :logs).group(:name).order('count_id desc').count('id').take(5).each do |g| %>
+        <li><%= g[0] %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
-<p>
-	<strong><i class="fas fa-dice"></i> GAMES</strong>
-</p>
+<br>
+<div class="card mb-3">
+  <div class="card-body">
+    <p>
+    	<strong><i class="fas fa-dice"></i> GAMES</strong>
+    </p>
 
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col" width="40px">#</th>
-      <th scope="col">Name</th>
-      <th scope="col" width="100px">Year</th>
-      <th scope="col" width="300px">Publisher</th>
-    </tr>
-  </thead>
+    <small>
+    <table class="table table-sm table-borderless table-hover">
+      <thead>
+        <tr>
+          <td style="width: 30px;">#</td>
+          <td style="width: 60%">NAME</td>
+          <td>PLAYER COUNT</td>
+          <td>YEAR</td>
+          <td>PUBLISHER</td>
+          <td>LOGS</td>
+        </tr>
+      </thead>
 
-<tbody>
-	<% for game in @designer.games %>
-    <tr>
-        <th scope="row"><%= game.id %></th>
-        <td><%= game.name %></td>
-        <td><%= game.year %></td>
-        <td><%= game.publisher.name %></td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
+    	<% for game in @designer.games %>
+        <tr>
+          <td><%= game.id %></td>
+          <td><%= game.name %></td>
+          <td><%= game.pcount %></td>
+          <td><%= game.year %></td>
+          <td><%= game.publisher.name %></td>
+          <td><%= GameDesigner.where(game_id: game.id).joins(game: :logs).count %></td>
+        </tr>
+    	<% end %>
+    </tbody>
+    </table></small>
+  </div>
+</div>
+
+<br>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <p>
+    	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
+    </p>
+
+    <small>
+    <table class="table table-sm table-borderless table-hover">
+      <thead>
+        <tr>
+          <td style="width: 30px;">#</td>
+          <td style="width: 30%">NAME</td>
+          <td style="width: 30%">BASE GAME</td>
+          <td>PLAYER COUNT</td>
+          <td>YEAR</td>
+          <td>PUBLISHER</td>
+          <td>LOGS</td>
+        </tr>
+      </thead>
+
+    <tbody>
+    	<% for expansion in @designer.expansions %>
+        <tr>
+            <td><%= expansion.id %></td>
+            <td><%= expansion.name %></td>
+            <td><%= expansion.game.name %></td>
+            <td><%= expansion.pcount %></td>
+            <td><%= expansion.year %></td>
+            <td><%= expansion.publisher.name %></td>
+            <td><%= LogExpansion.where(expansion_id: expansion.id).count %></td>
+    	</tr>
+    	<% end %>
+    </tbody>
+    </table></small>
+  </div>
+</div>
 
 <br><br>
-
-<p>
-	<strong><i class="fas fa-dice-five"></i> EXPANSIONS</strong>
-</p>
-
-<table class="table table-sm table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col" width="40px">#</th>
-      <th scope="col">Name</th>
-      <th scope="col" width="100px">Year</th>
-      <th scope="col" width="300px">Publisher</th>
-    </tr>
-  </thead>
-
-<tbody>
-	<% for expansion in @designer.expansions %>
-    <tr>
-        <th scope="row"><%= expansion.id %></th>
-        <td><%= expansion.name %></td>
-        <td><%= expansion.year %></td>
-        <td><%= expansion.publisher.name %></td>
-	</tr>
-	<% end %>
-</tbody>
-</table>
-
 
 <%= link_to 'Add', new_designer_path(@designer) %> |
 <%= link_to 'Edit', edit_designer_path(@designer) %> |
 <%= link_to 'Back to Designers', designers_path %>
 
+<br><br><br>
 </div>
+
+

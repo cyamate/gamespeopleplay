@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
 
   <a class="navbar-brand" href="/welcome/index" style="color :#ffcc00;">gamespeopleplay</a>
 
@@ -11,13 +11,13 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link" href="/logs">logs</a>
+        <a class="nav-link" href="/logs?column=date&direction=desc">logs</a>
       </li>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="/games" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">games</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/games">show all</a>
+          <a class="dropdown-item" href="/games?sort=name">show all</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/expansions">expansions</a>
           <a class="dropdown-item" href="/publishers">publishers</a>

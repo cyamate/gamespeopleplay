@@ -1,10 +1,11 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = Game.order("#{sort_column} #{sort_direction}").page(params[:page]).per(20)
     @most = Game.most
   end
 
@@ -68,6 +69,18 @@ class GamesController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["name", "pcount", "year", "owned"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "name"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_game
       @game = Game.find(params[:id])

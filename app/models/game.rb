@@ -8,6 +8,6 @@ class Game < ApplicationRecord
   accepts_nested_attributes_for :game_designers, :reject_if => lambda { |d| d[:designer_id].blank? }, :allow_destroy => true
 
   def self.most
-    Log.joins(:game).group(:name).count.sort
+    Log.joins(:game).group(:name).order('count_id desc').count('id')
   end
 end

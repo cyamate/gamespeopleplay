@@ -1,42 +1,107 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+</head>
+
 <br>
 <div class="container">
 
 <p id="notice"><%= notice %></p>
 
+<div class="card mb-3">
+  <div class="card-header">
+    <strong><%= @expansion.name.upcase %></strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+    <%= @expansion.game.name.upcase %> 
+    </li>
+    <li class="list-group-item">
+      <div class="table table-sm table-borderless">
+        <table>
+          <tr>
+            <td width="120px">Year</td>
+            <td><%= @expansion.year %></td>
+          </tr>
+          <tr>
+            <td>Publisher</td>
+            <td><%= @expansion.publisher.name %></td>
+          </tr>
+          <tr>
+            <td>Designers</td>
+            <td>
+              <ul class="list-unstyled"><% for expansion_designer in @expansion.expansion_designers %>
+                <li><%= expansion_designer.designer.name %></li>
+              <% end %></ul>
+            </td>
+          </tr>
+          <tr>
+            <td>Player count</td>
+            <td><%= @expansion.pcount %></td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    
+  </ul>
+</div>
+
+<br>
 <p>
-  <strong>Name:</strong>
-  <%= @expansion.name %>
+  <strong><i class="fas fa-chart-bar"></i> SCORE DISTRIBUTION BY PLAYER COUNT</strong>
+<%= scatter_chart LogExpansion.joins(log: :player_scores).where(expansion_id: @expansion.id).pluck(:score, :pcount), xtitle: "Score", ytitle: "Player count", colors: ["#ffcc00"] %>
 </p>
 
-<p>
-  <strong>Base Game:</strong>
-  <%= @expansion.game.name %>
-</p>
+<br>
 
 <p>
-  <strong>Year:</strong>
-  <%= @expansion.year %>
+  <strong><i class="fas fa-trophy"></i> LOGS</strong>
 </p>
 
-<p>
-  <strong>Publisher:</strong>
-  <%= @expansion.publisher.name %>
-</p>
+<div class="card mb-3">
+  <div class="card-body">
+    <small><table class="table table-sm table-borderless table-hover">
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>DATE</td>
+          <td>PLAYER COUNT</td>
+          <td>PLAYERS</td>
+          <td>AVERAGE</td>
+        </tr>
+      </thead>
 
-  <strong>Designers:</strong>
-    <ul>
-      <% for expansion_designer in @expansion.expansion_designers %>
-        <li class="list-unstyled"><%= expansion_designer.designer.name %></li>
+    <tbody>
+      <% for log in @expansion.logs %>
+        <tr>
+            <td width="30px"><%= log.id %></td>
+            <td><%= log.date %></td>
+            <td><%= log.pcount %></td>
+            <td>
+              <ul class="list-unstyled">
+                  <% for player_score in log.player_scores %>
+                    <li><%= player_score.player.name %>: <%= player_score.score %></li>
+                  <% end %>
+              </ul>
+            </td>
+            <td><%= log.player_scores.average(:score).round(2) %></td>
+      </tr>
       <% end %>
-    </ul>
+    </tbody>
+    </table></small>
+  </div>
+</div>
 
-<p>
-  <strong>Player count:</strong>
-  <%= @expansion.pcount %>
-</p>
+<br><br>
 
 <%= link_to 'Add', new_expansion_path(@expansion) %> |
 <%= link_to 'Edit', edit_expansion_path(@expansion) %> |
 <%= link_to 'Back to expansions', expansions_path %>
+
+<br><br>
+
+
+
+
+<br><br><br><br>
 
 </div>

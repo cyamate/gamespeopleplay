@@ -8,47 +8,66 @@
 
 <h4><i class="fas fa-trophy"></i> LOGS</h4>
 
-<table class="table table-borderless table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Date</th>
-      <th scope="col">Player count</th>
-      <th scope="col">Game</th>
-      <th scope="col">Players</th>
-      <th scope="col">Average</th>
-      <th scope="col" colspan="3"></th>
-    </tr>
-  </thead>
+<div class="card mb-3">
+  <div class="card-body">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col"><%= sort_link "date", "DATE" %></th>
+          <th scope="col"><%= sort_link "pcount", "PCOUNT" %></th>
+          <th scope="col">GAME</th>
+          <th scope="col">PLAYERS</th>
+          <th scope="col">AVERAGE</th>
+          <th scope="col" colspan="3"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @logs.each do |log| %>
-      <tr>
-        <th scope="row" style="width: 40px;"><%= log.id %></th>
-        <td><%= log.date %></td>
-        <td><%= log.pcount %></td>
-        <td><%= log.game.name %>
-          <ul>
-            <% for log_expansion in log.log_expansions %>
-             <li class="list-unstyled"><%= log_expansion.expansion.name %></li>
-            <% end %>
-          </ul>
-        </td>
-        <td>
-          <ul class="list-unstyled">
-            <% for player_score in log.player_scores %>
-             <li><%= player_score.player.name %>: <%= player_score.score %></li>
-            <% end %>
-          </ul>
-        </td>
-        <td><%= log.player_scores.average(:score).round(2) if log.player_scores %></td>
-        <td style="width: 45px;"><%= link_to log do %><i class="far fa-eye fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to edit_log_path(log) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
-        <td style="width: 45px;"><%= link_to log, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <tbody>
+        <% @logs.each do |log| %>
+          <tr>
+            <td><%= log.date.strftime("%Y/%m/%d") %></td>
+            <td><%= log.pcount %></td>
+            <td><%= log.game.name %>
+              <ul>
+                <% for log_expansion in log.log_expansions %>
+                 <li class="list-unstyled"><%= log_expansion.expansion.name %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td>
+              <ul class="list-unstyled">
+                <% for player_score in log.player_scores %>
+                 <li><%= player_score.player.name %>: <%= player_score.score %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= log.player_scores.average(:score).round(2) if log.player_scores %></td>
+            <td style="width: 45px;"><%= link_to log do %><i class="far fa-eye fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to edit_log_path(log) do %><i class="fas fa-edit fa-fw"></i><% end %></td>
+            <td style="width: 45px;"><%= link_to log, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="far fa-trash-alt fa-fw"></i><% end %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+<br>
+<center>
+  <table>
+    <tr>
+      <td><%= paginate @logs %></td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td><%= page_entries_info @logs %></td>
+    </tr>
+  </table>
+</center>
+
+</div>
+
+</div>
 
 <p align="right">
   <button type="button" class="btn btn-light btn-sm">
@@ -56,4 +75,6 @@
   </button>
 </p>
 
+<br><br><br>
 </div>
+

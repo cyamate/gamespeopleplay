@@ -73,11 +73,11 @@
     
     <li class="list-group-item">
       <p>MOST PLAYED GAMES</p>
-        <ul class="list-unstyled">
-            <% PlayerScore.where(player_id: @player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(5).each do |g| %>
-              <li><%= g[0] %></li>
-            <% end %> 
-          </ul>
+      <ul class="list-unstyled">
+        <% PlayerScore.where(player_id: @player.id).joins(log: :game).group(:name).order('count_id desc').count('id').take(5).each do |g| %>
+          <li><%= g[0] %></li>
+        <% end %> 
+      </ul>
     </li>
   </ul>
 </div>
@@ -148,8 +148,7 @@
 </div>
 
 <%= link_to 'Add', new_player_path(@player) %> |
-<%= link_to 'Edit', edit_player_path(@player) %> |
-<%= link_to 'Back to Players', players_path %>
+<%= link_to 'Edit', edit_player_path(@player) %>
 
 <br>
 <br>

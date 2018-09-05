@@ -1,10 +1,11 @@
 class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
+  helper_method :sort_column, :sort_direction
 
   # GET /players
   # GET /players.json
   def index
-    @players = Player.order(params[:sort])
+    @players = Player.order("#{sort_column} #{sort_direction}").page(params[:page]).per(10)
   end
 
   # GET /players/1
@@ -64,6 +65,18 @@ class PlayersController < ApplicationController
   end
 
   private
+    def sortable_columns
+      ["name", "id"]
+    end
+
+    def sort_column
+      sortable_columns.include?(params[:column]) ? params[:column] : "id"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_player
       @player = Player.find(params[:id])
